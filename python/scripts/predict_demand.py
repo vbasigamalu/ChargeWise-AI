@@ -33,44 +33,51 @@ def predict_demand(zone="all", date=None, hours=None):
     if hours is None:
         hours = list(range(24))
 
+    all_rows = []
+    meta = []
+
+    for z in zones:
+        if z not in zone_map: continue
+        for h in hours:
+            mask = (hourly["zone"] == z) & (hourly["hour"] == h)
+            if mask.sum() == 0: continue
+            
+            row = hourly.loc[mask, feature_cols].mean()
+            all_rows.append(row)
+            meta.append({"zone": z, "hour": h})
+
+    if not all_rows:
+        return {"predictions": [], "heatmap_data": [], "summary": {"total_predicted_kWh": 0, "zones_analyzed": 0}}
+
+    X = pd.DataFrame(all_rows)
+    rf_preds = rf.predict(X)
+    xgb_preds = xgb_model.predict(X)
+    
     predictions = []
     heatmap_data = []
 
-    for z in zones:
-        if z not in zone_map:
-            continue
-        zone_enc = zone_map[z]
+    for i, (rf_p, xgb_p) in enumerate(zip(rf_preds, xgb_preds)):
+        ensemble_pred = 0.4 * rf_p + 0.6 * xgb_p
+        z, h = meta[i]["zone"], meta[i]["hour"]
+        
+        # Confidence based on prediction agreement
+        diff_pct = abs(rf_p - xgb_p) / max(ensemble_pred, 1) * 100
+        confidence = max(0, min(100, 100 - diff_pct * 2))
 
-        for h in hours:
-            # Get average features for this zone/hour from historical data
-            mask = (hourly["zone"] == z) & (hourly["hour"] == h)
-            if mask.sum() == 0:
-                continue
-
-            row = hourly.loc[mask, feature_cols].mean().values.reshape(1, -1)
-
-            rf_pred = rf.predict(row)[0]
-            xgb_pred = xgb_model.predict(row)[0]
-            ensemble_pred = 0.4 * rf_pred + 0.6 * xgb_pred
-
-            # Confidence based on prediction agreement
-            diff_pct = abs(rf_pred - xgb_pred) / max(ensemble_pred, 1) * 100
-            confidence = max(0, min(100, 100 - diff_pct * 2))
-
-            predictions.append({
-                "zone": z,
-                "hour": int(h),
-                "predicted_kWh": round(float(ensemble_pred), 2),
-                "rf_prediction": round(float(rf_pred), 2),
-                "xgb_prediction": round(float(xgb_pred), 2),
-                "confidence": round(float(confidence), 1),
-            })
-
-            heatmap_data.append({
-                "zone": z,
-                "hour": int(h),
-                "intensity": round(float(ensemble_pred), 2),
-            })
+        res = {
+            "zone": z,
+            "hour": int(h),
+            "predicted_kWh": round(float(ensemble_pred), 2),
+            "rf_prediction": round(float(rf_p), 2),
+            "xgb_prediction": round(float(xgb_p), 2),
+            "confidence": round(float(confidence), 1),
+        }
+        predictions.append(res)
+        heatmap_data.append({
+            "zone": z,
+            "hour": int(h),
+            "intensity": round(float(ensemble_pred), 2),
+        })
 
     # Summary stats
     total_demand = sum(p["predicted_kWh"] for p in predictions)

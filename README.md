@@ -23,40 +23,38 @@ This system provides an intelligent decision-support layer operating on top of e
 
 ## Architecture
 
-* **Backend:** Python (Pandas, Scikit-learn, XGBoost, SHAP) exposes ML via Flask API
-* **Middleware:** Node.js / Express handles routing and bridging
-* **Frontend:** React + Vite + Chart.js + Leaflet
+* **Middleware/Backend:** Node.js + Express (Port 5000)
+    * Uses a `child_process` bridge to execute Python ML scripts on-demand.
+* **ML Logic:** Python 3.12 (Pandas, Scikit-learn, XGBoost, SHAP).
+* **Frontend:** React + Vite + Chart.js + Leaflet (Port 5173).
 
 ## Getting Started
 
-### 1. Generate Datasets & Train Models (Python)
+### 1. Setup Python Environment
+Ensure you have **Python 3.12** installed.
 
 ```bash
 cd python
 pip install -r requirements.txt
 
-# Generate synthetic data for Bengaluru
-python generators/generate_ev_registrations.py
-python generators/generate_charging_sessions.py
-python generators/generate_grid_capacity.py
-python generators/generate_stations.py
-python generators/generate_zones_geojson.py
-
-# Train models
-python training/train_demand_model.py
-python training/train_clustering.py
-
-# Start ML API server (runs on port 5001)
-python app.py
+# Generate synthetic data & train models
+py -3.12 generators/generate_ev_registrations.py
+py -3.12 generators/generate_charging_sessions.py
+py -3.12 generators/generate_grid_capacity.py
+py -3.12 generators/generate_stations.py
+py -3.12 generators/generate_zones_geojson.py
+py -3.12 training/train_demand_model.py
+py -3.12 training/train_clustering.py
 ```
 
-### 2. Start Middleware (Node.js)
+### 2. Start Backend (Node.js)
+The backend spawns Python scripts directly, so no Flask server is needed.
 
 ```bash
 cd server
 npm install
 npm start
-# Runs on port 5000, proxies requests to Python API
+# Server runs on http://localhost:5000
 ```
 
 ### 3. Start Frontend (React)
@@ -65,7 +63,7 @@ npm start
 cd client
 npm install
 npm run dev
-# Runs on port 5173
+# Dashboard runs on http://localhost:5173
 ```
 
 ## Hackathon Details
