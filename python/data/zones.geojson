@@ -1,0 +1,437 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Koramangala",
+        "color": "#FF6B6B",
+        "center_lat": 12.9352,
+        "center_lng": 77.6245
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6095,
+              12.9202
+            ],
+            [
+              77.6395,
+              12.9202
+            ],
+            [
+              77.6395,
+              12.9502
+            ],
+            [
+              77.6095,
+              12.9502
+            ],
+            [
+              77.6095,
+              12.9202
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Whitefield",
+        "color": "#4ECDC4",
+        "center_lat": 12.9698,
+        "center_lng": 77.75
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.735,
+              12.954799999999999
+            ],
+            [
+              77.765,
+              12.954799999999999
+            ],
+            [
+              77.765,
+              12.9848
+            ],
+            [
+              77.735,
+              12.9848
+            ],
+            [
+              77.735,
+              12.954799999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Jayanagar",
+        "color": "#45B7D1",
+        "center_lat": 12.925,
+        "center_lng": 77.5938
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5788,
+              12.91
+            ],
+            [
+              77.6088,
+              12.91
+            ],
+            [
+              77.6088,
+              12.940000000000001
+            ],
+            [
+              77.5788,
+              12.940000000000001
+            ],
+            [
+              77.5788,
+              12.91
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Indiranagar",
+        "color": "#96CEB4",
+        "center_lat": 12.9784,
+        "center_lng": 77.6408
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6258,
+              12.9634
+            ],
+            [
+              77.6558,
+              12.9634
+            ],
+            [
+              77.6558,
+              12.993400000000001
+            ],
+            [
+              77.6258,
+              12.993400000000001
+            ],
+            [
+              77.6258,
+              12.9634
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Electronic City",
+        "color": "#FFEAA7",
+        "center_lat": 12.844,
+        "center_lng": 77.6765
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6615,
+              12.828999999999999
+            ],
+            [
+              77.6915,
+              12.828999999999999
+            ],
+            [
+              77.6915,
+              12.859
+            ],
+            [
+              77.6615,
+              12.859
+            ],
+            [
+              77.6615,
+              12.828999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yelahanka",
+        "color": "#DDA0DD",
+        "center_lat": 13.1007,
+        "center_lng": 77.5963
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5813,
+              13.0857
+            ],
+            [
+              77.6113,
+              13.0857
+            ],
+            [
+              77.6113,
+              13.1157
+            ],
+            [
+              77.5813,
+              13.1157
+            ],
+            [
+              77.5813,
+              13.0857
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HSR Layout",
+        "color": "#98D8C8",
+        "center_lat": 12.9116,
+        "center_lng": 77.6389
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6239,
+              12.8966
+            ],
+            [
+              77.65390000000001,
+              12.8966
+            ],
+            [
+              77.65390000000001,
+              12.9266
+            ],
+            [
+              77.6239,
+              12.9266
+            ],
+            [
+              77.6239,
+              12.8966
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Marathahalli",
+        "color": "#F7DC6F",
+        "center_lat": 12.9591,
+        "center_lng": 77.7009
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6859,
+              12.944099999999999
+            ],
+            [
+              77.7159,
+              12.944099999999999
+            ],
+            [
+              77.7159,
+              12.9741
+            ],
+            [
+              77.6859,
+              12.9741
+            ],
+            [
+              77.6859,
+              12.944099999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rajajinagar",
+        "color": "#BB8FCE",
+        "center_lat": 12.9883,
+        "center_lng": 77.5533
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.53829999999999,
+              12.9733
+            ],
+            [
+              77.5683,
+              12.9733
+            ],
+            [
+              77.5683,
+              13.003300000000001
+            ],
+            [
+              77.53829999999999,
+              13.003300000000001
+            ],
+            [
+              77.53829999999999,
+              12.9733
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "BTM Layout",
+        "color": "#82E0AA",
+        "center_lat": 12.9166,
+        "center_lng": 77.6101
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5951,
+              12.9016
+            ],
+            [
+              77.6251,
+              12.9016
+            ],
+            [
+              77.6251,
+              12.931600000000001
+            ],
+            [
+              77.5951,
+              12.931600000000001
+            ],
+            [
+              77.5951,
+              12.9016
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hebbal",
+        "color": "#F0B27A",
+        "center_lat": 13.0358,
+        "center_lng": 77.597
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.582,
+              13.0208
+            ],
+            [
+              77.612,
+              13.0208
+            ],
+            [
+              77.612,
+              13.0508
+            ],
+            [
+              77.582,
+              13.0508
+            ],
+            [
+              77.582,
+              13.0208
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Banashankari",
+        "color": "#AED6F1",
+        "center_lat": 12.9255,
+        "center_lng": 77.5468
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5318,
+              12.910499999999999
+            ],
+            [
+              77.5618,
+              12.910499999999999
+            ],
+            [
+              77.5618,
+              12.9405
+            ],
+            [
+              77.5318,
+              12.9405
+            ],
+            [
+              77.5318,
+              12.910499999999999
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

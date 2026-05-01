@@ -1,0 +1,41 @@
+station_id,station_name,zone,lat,lng,num_chargers,charger_type,avg_utilization_pct,is_operational
+STN-001,Koramangala Station 1,Koramangala,12.932189,77.635317,6,Fast AC (7.4kW),66.5,True
+STN-002,Koramangala Station 2,Koramangala,12.924594,77.633288,9,Fast AC (7.4kW),66.5,True
+STN-003,Koramangala Station 3,Koramangala,12.938821,77.613854,7,Fast AC (7.4kW),91.9,True
+STN-004,Koramangala Station 4,Koramangala,12.92337,77.613053,11,Fast AC (7.4kW),93.1,True
+STN-005,Koramangala Station 5,Koramangala,12.92432,77.63587,4,Slow AC (3.3kW),72.1,True
+STN-006,Whitefield Station 1,Whitefield,12.969002,77.758639,10,Fast AC (7.4kW),72.5,True
+STN-007,Whitefield Station 2,Whitefield,12.959361,77.760773,3,DC Fast (50kW),70.9,True
+STN-008,Whitefield Station 3,Whitefield,12.963341,77.743785,9,Fast AC (7.4kW),72.5,True
+STN-009,Whitefield Station 4,Whitefield,12.958625,77.759824,9,Slow AC (3.3kW),66.3,True
+STN-010,Whitefield Station 5,Whitefield,12.962791,77.751625,3,Slow AC (3.3kW),95.0,True
+STN-011,Whitefield Station 6,Whitefield,12.976403,77.760548,9,DC Fast (50kW),84.8,True
+STN-012,Jayanagar Station 1,Jayanagar,12.936068,77.602069,6,Fast AC (7.4kW),95.0,True
+STN-013,Jayanagar Station 2,Jayanagar,12.927082,77.604966,10,Fast AC (7.4kW),51.3,True
+STN-014,Jayanagar Station 3,Jayanagar,12.913375,77.591962,9,Slow AC (3.3kW),56.3,True
+STN-015,Indiranagar Station 1,Indiranagar,12.966533,77.648371,4,Fast AC (7.4kW),74.1,True
+STN-016,Indiranagar Station 2,Indiranagar,12.988631,77.644426,10,DC Fast (50kW),86.6,True
+STN-017,Indiranagar Station 3,Indiranagar,12.981359,77.636742,8,Slow AC (3.3kW),85.2,True
+STN-018,Indiranagar Station 4,Indiranagar,12.980591,77.635393,4,Fast AC (7.4kW),85.5,True
+STN-019,Electronic City Station 1,Electronic City,12.83487,77.681618,11,DC Fast (50kW),64.3,True
+STN-020,Electronic City Station 2,Electronic City,12.83297,77.681556,4,Slow AC (3.3kW),63.3,True
+STN-021,Electronic City Station 3,Electronic City,12.832754,77.679774,5,Slow AC (3.3kW),72.7,True
+STN-022,Electronic City Station 4,Electronic City,12.841849,77.682633,8,Slow AC (3.3kW),81.4,True
+STN-023,Electronic City Station 5,Electronic City,12.838954,77.668369,10,DC Fast (50kW),74.4,True
+STN-024,Electronic City Station 6,Electronic City,12.837243,77.674496,11,DC Fast (50kW),61.7,True
+STN-025,Electronic City Station 7,Electronic City,12.83493,77.673051,2,DC Fast (50kW),70.1,True
+STN-026,Yelahanka Station 1,Yelahanka,13.108332,77.604958,9,Slow AC (3.3kW),36.0,True
+STN-027,HSR Layout Station 1,HSR Layout,12.912418,77.638536,11,Fast AC (7.4kW),70.8,True
+STN-028,HSR Layout Station 2,HSR Layout,12.907357,77.639351,2,Fast AC (7.4kW),61.5,True
+STN-029,HSR Layout Station 3,HSR Layout,12.901157,77.632994,8,Slow AC (3.3kW),35.2,True
+STN-030,Marathahalli Station 1,Marathahalli,12.953936,77.689785,3,Fast AC (7.4kW),66.6,True
+STN-031,Marathahalli Station 2,Marathahalli,12.956965,77.689693,2,Slow AC (3.3kW),58.4,True
+STN-032,Marathahalli Station 3,Marathahalli,12.958847,77.712556,5,Slow AC (3.3kW),60.7,True
+STN-033,Marathahalli Station 4,Marathahalli,12.94904,77.697772,7,Slow AC (3.3kW),88.0,True
+STN-034,Rajajinagar Station 1,Rajajinagar,12.991505,77.554159,2,Slow AC (3.3kW),40.0,True
+STN-035,Rajajinagar Station 2,Rajajinagar,12.979917,77.553497,4,Fast AC (7.4kW),86.6,True
+STN-036,BTM Layout Station 1,BTM Layout,12.904998,77.61039,8,Slow AC (3.3kW),74.1,True
+STN-037,BTM Layout Station 2,BTM Layout,12.908785,77.614683,3,Slow AC (3.3kW),68.2,True
+STN-038,Hebbal Station 1,Hebbal,13.041445,77.590018,11,Fast AC (7.4kW),74.9,True
+STN-039,Hebbal Station 2,Hebbal,13.029991,77.60084,10,DC Fast (50kW),35.3,True
+STN-040,Banashankari Station 1,Banashankari,12.93741,77.55797,8,Fast AC (7.4kW),59.8,True
