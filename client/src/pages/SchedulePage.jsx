@@ -89,7 +89,7 @@ export default function SchedulePage() {
         <div className="chart-container">
           <h3>Load Curve — Before vs After</h3>
           <div className="chart-wrapper" style={{ height: 350 }}>
-            <Line data={loadCurveData} options={opts} />
+            <Line key={selectedZone} data={loadCurveData} options={opts} />
           </div>
         </div>
 
