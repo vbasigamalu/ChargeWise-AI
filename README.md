@@ -67,7 +67,6 @@ npm run dev
 ```
 
 ## Hackathon Details
-* **Event:** AI for Bharat 2025
+* **Event:** AI for Bharat 2026
 * **Client:** BESCOM, Bengaluru
-* **Team:** 2 members
-* **Timeframe:** 4 days
+* **Team:** 5 members

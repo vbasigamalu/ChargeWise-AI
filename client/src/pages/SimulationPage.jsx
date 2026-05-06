@@ -3,17 +3,58 @@ import { Bar } from "react-chartjs-2";
 import { runSimulation } from "../services/api";
 import { ZONES } from "../utils/constants";
 
+const PRESETS = [
+  {
+    id: "conservative",
+    label: "Conservative 2025",
+    icon: "🟢",
+    desc: "Low growth, minimal adoption",
+    params: { ev_growth_pct: 10, scheduling_adoption_pct: 20, time_horizon_months: 6 },
+    color: "#00D4AA",
+  },
+  {
+    id: "moderate",
+    label: "Moderate 2026",
+    icon: "🟡",
+    desc: "Balanced growth & adoption",
+    params: { ev_growth_pct: 30, scheduling_adoption_pct: 50, time_horizon_months: 12 },
+    color: "#FFD93D",
+  },
+  {
+    id: "stress",
+    label: "⚠️ Stress Test 2027",
+    icon: "🔴",
+    desc: "High growth, low adoption",
+    params: { ev_growth_pct: 60, scheduling_adoption_pct: 15, time_horizon_months: 24 },
+    color: "#FF6B35",
+  },
+  {
+    id: "aggressive",
+    label: "🚀 Aggressive 2030",
+    icon: "🟣",
+    desc: "Max growth + full smart charging",
+    params: { ev_growth_pct: 100, scheduling_adoption_pct: 80, time_horizon_months: 36 },
+    color: "#c084fc",
+  },
+];
+
 export default function SimulationPage() {
   const [params, setParams] = useState({
     ev_growth_pct: 30,
     scheduling_adoption_pct: 50,
     time_horizon_months: 12,
   });
+  const [activePreset, setActivePreset] = useState("moderate");
   const [newStationZone, setNewStationZone] = useState("Yelahanka");
   const [newStationChargers, setNewStationChargers] = useState(10);
   const [addedStations, setAddedStations] = useState([]);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const applyPreset = (preset) => {
+    setActivePreset(preset.id);
+    setParams({ ...preset.params });
+  };
 
   const addStation = () => {
     setAddedStations([...addedStations, { zone: newStationZone, chargers: newStationChargers }]);
@@ -62,6 +103,54 @@ export default function SimulationPage() {
         <p>Model future EV growth, station additions, and scheduling impact on grid load</p>
       </div>
 
+      {/* Scenario Presets */}
+      <div className="chart-container" style={{ marginBottom: 24 }}>
+        <h3>⚡ Quick Scenarios</h3>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 16, marginTop: -8 }}>
+          Click a preset to instantly configure all parameters
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+          {PRESETS.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => applyPreset(p)}
+              className="preset-btn"
+              style={{
+                padding: "16px 12px",
+                borderRadius: "var(--radius-sm)",
+                background: activePreset === p.id
+                  ? `${p.color}15`
+                  : "var(--bg-card)",
+                border: `2px solid ${activePreset === p.id ? p.color : "var(--glass-border)"}`,
+                cursor: "pointer",
+                textAlign: "left",
+                transition: "all 0.3s ease",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              {activePreset === p.id && (
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, height: 3,
+                  background: p.color,
+                }} />
+              )}
+              <div style={{ fontSize: 14, fontWeight: 700, color: activePreset === p.id ? p.color : "var(--text-primary)", marginBottom: 4 }}>
+                {p.label}
+              </div>
+              <div style={{ fontSize: 11, color: "var(--text-muted)", lineHeight: 1.4 }}>
+                {p.desc}
+              </div>
+              <div style={{ fontSize: 10, color: "var(--text-muted)", marginTop: 8, display: "flex", gap: 8 }}>
+                <span>📈 {p.params.ev_growth_pct}%</span>
+                <span>⏱ {p.params.scheduling_adoption_pct}%</span>
+                <span>📅 {p.params.time_horizon_months}mo</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="grid-2">
         {/* Controls */}
         <div className="chart-container">
@@ -70,19 +159,19 @@ export default function SimulationPage() {
           <div className="slider-group">
             <label>EV Growth Rate <span>{params.ev_growth_pct}%</span></label>
             <input type="range" min="0" max="100" value={params.ev_growth_pct}
-              onChange={e => setParams({ ...params, ev_growth_pct: +e.target.value })} />
+              onChange={e => { setActivePreset(null); setParams({ ...params, ev_growth_pct: +e.target.value }); }} />
           </div>
 
           <div className="slider-group">
             <label>Scheduling Adoption <span>{params.scheduling_adoption_pct}%</span></label>
             <input type="range" min="0" max="100" value={params.scheduling_adoption_pct}
-              onChange={e => setParams({ ...params, scheduling_adoption_pct: +e.target.value })} />
+              onChange={e => { setActivePreset(null); setParams({ ...params, scheduling_adoption_pct: +e.target.value }); }} />
           </div>
 
           <div className="slider-group">
             <label>Time Horizon <span>{params.time_horizon_months} months</span></label>
             <input type="range" min="3" max="36" value={params.time_horizon_months}
-              onChange={e => setParams({ ...params, time_horizon_months: +e.target.value })} />
+              onChange={e => { setActivePreset(null); setParams({ ...params, time_horizon_months: +e.target.value }); }} />
           </div>
 
           <div style={{ marginTop: 16, padding: 16, background: "var(--bg-card)", borderRadius: 8, border: "1px solid var(--glass-border)" }}>
@@ -145,7 +234,7 @@ export default function SimulationPage() {
                   <tr><th>Zone</th><th>Baseline</th><th>Projected</th><th>Change</th><th>Risk</th></tr>
                 </thead>
                 <tbody>
-                  {scenarios.slice(0, 8).map((s, i) => (
+                  {scenarios.map((s, i) => (
                     <tr key={i}>
                       <td>{s.zone}</td>
                       <td>{s.baseline.daily_peak_kWh}</td>
