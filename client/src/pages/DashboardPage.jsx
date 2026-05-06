@@ -42,25 +42,31 @@ export default function DashboardPage() {
   const criticalZones = grid?.summary?.critical_zones || 0;
 
   // Build demand by zone chart
-  const zones = [...new Set((heatmap?.heatmap_data || []).map(d => d.zone))];
-  const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+  const heatmapData = heatmap?.heatmap_data || [];
+  const currentHour = heatmap?.current_hour;
+  const zones = [...new Set(heatmapData.map(d => d.zone))];
+  
+  // Dynamic hours: Extract order from the first zone's data
+  const orderedHours = heatmapData.filter(d => d.zone === (zones[0] || "")).map(d => d.hour);
+  const hours = orderedHours.length === 24 ? orderedHours : Array.from({ length: 24 }, (_, i) => i);
 
   const demandByHour = {};
-  (heatmap?.heatmap_data || []).forEach(d => {
-    if (!demandByHour[d.zone]) demandByHour[d.zone] = new Array(24).fill(0);
+  heatmapData.forEach(d => {
+    if (!demandByHour[d.zone]) demandByHour[d.zone] = {};
     demandByHour[d.zone][d.hour] = d.intensity;
   });
 
   const lineData = {
-    labels: hours,
+    labels: hours.map(h => h === currentHour ? `NOW (${h}:00)` : `${h}:00`),
     datasets: zones.slice(0, 6).map((z, i) => ({
       label: z,
-      data: demandByHour[z] || [],
+      data: hours.map(h => demandByHour[z]?.[h] || 0),
       borderColor: CHART_COLORS[i],
       backgroundColor: CHART_COLORS[i] + "20",
       fill: false,
       tension: 0.4,
-      pointRadius: 0,
+      pointRadius: hours.map(h => h === currentHour ? 5 : 0),
+      pointBackgroundColor: "#fff",
       borderWidth: 2,
     })),
   };

@@ -16,29 +16,34 @@ export default function DemandPage() {
   if (loading) return <div className="loading-container"><div className="loading-spinner" /><p>Predicting demand...</p></div>;
 
   const heatmapData = data?.heatmap_data || [];
+  const currentHour = data?.current_hour;
   const zones = [...new Set(heatmapData.map(d => d.zone))];
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  
+  // Dynamic hours: Extract order from the first zone's data
+  const orderedHours = heatmapData.filter(d => d.zone === (zones[0] || "")).map(d => d.hour);
+  const hours = orderedHours.length === 24 ? orderedHours : Array.from({ length: 24 }, (_, i) => i);
 
   // Build heatmap grid
   const filteredZones = selectedZone === "all" ? zones : [selectedZone];
 
   const demandByZone = {};
   heatmapData.forEach(d => {
-    if (!demandByZone[d.zone]) demandByZone[d.zone] = new Array(24).fill(0);
+    if (!demandByZone[d.zone]) demandByZone[d.zone] = {};
     demandByZone[d.zone][d.hour] = d.intensity;
   });
 
   // Line chart
   const lineData = {
-    labels: hours.map(h => `${h}:00`),
+    labels: hours.map(h => h === currentHour ? `NOW (${h}:00)` : `${h}:00`),
     datasets: filteredZones.map((z, i) => ({
       label: z,
-      data: demandByZone[z] || [],
+      data: hours.map(h => demandByZone[z]?.[h] || 0),
       borderColor: CHART_COLORS[zones.indexOf(z) % CHART_COLORS.length],
       backgroundColor: CHART_COLORS[zones.indexOf(z) % CHART_COLORS.length] + "15",
       fill: true,
       tension: 0.4,
-      pointRadius: 2,
+      pointRadius: hours.map(h => h === currentHour ? 6 : 2),
+      pointBackgroundColor: hours.map(h => h === currentHour ? "#fff" : CHART_COLORS[zones.indexOf(z) % CHART_COLORS.length]),
       borderWidth: 2,
     })),
   };
@@ -126,7 +131,8 @@ export default function DemandPage() {
                 <tr key={z}>
                   <td style={{ fontWeight: 600, whiteSpace: "nowrap" }}>{z}</td>
                   {hours.map(h => {
-                    const val = (demandByZone[z] || [])[h] || 0;
+                    const val = demandByZone[z]?.[h] || 0;
+                    const isNow = h === currentHour;
                     return (
                       <td key={h} style={{
                         background: getHeatColor(val),
@@ -134,8 +140,12 @@ export default function DemandPage() {
                         fontSize: 10,
                         color: "#fff",
                         padding: "6px 2px",
+                        border: isNow ? "2px solid #fff" : "none",
+                        position: "relative",
+                        zIndex: isNow ? 1 : 0,
                       }}>
                         {val > 0 ? Math.round(val) : ""}
+                        {isNow && <div style={{ fontSize: 7, fontWeight: 800, position: "absolute", top: -12, left: 0, width: "100%", color: "#fff", textShadow: "0 0 4px #000" }}>LIVE</div>}
                       </td>
                     );
                   })}
