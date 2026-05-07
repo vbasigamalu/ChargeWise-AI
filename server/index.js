@@ -127,9 +127,13 @@ app.get("/api/zones", async (req, res) => {
 });
 
 // ─── Start ─────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log("═".repeat(50));
-  console.log(`  EVOPT Express Server — http://localhost:${PORT}`);
-  console.log(`  Mode: Spawning Python via child_process`);
-  console.log("═".repeat(50));
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log("═".repeat(50));
+    console.log(`  EVOPT Express Server — http://localhost:${PORT}`);
+    console.log(`  Mode: Spawning Python via child_process`);
+    console.log("═".repeat(50));
+  });
+}
+
+module.exports = app;
