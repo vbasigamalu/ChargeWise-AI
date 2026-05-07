@@ -37,7 +37,7 @@ Ensure you have **Python 3.12** installed.
 cd python
 pip install -r requirements.txt
 
-# Generate synthetic data & train models
+# Generate data & train models
 py -3.12 generators/generate_ev_registrations.py
 py -3.12 generators/generate_charging_sessions.py
 py -3.12 generators/generate_grid_capacity.py
