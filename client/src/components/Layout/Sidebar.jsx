@@ -31,11 +31,6 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <div style={{ padding: "16px 24px", borderTop: "1px solid var(--glass-border)" }}>
-        <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-          AI for Bharat 2025
-        </div>
-      </div>
     </aside>
   );
 }
