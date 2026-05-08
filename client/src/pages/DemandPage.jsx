@@ -20,8 +20,7 @@ export default function DemandPage() {
   const zones = [...new Set(heatmapData.map(d => d.zone))];
   
   // Dynamic hours: Extract order from the first zone's data
-  const orderedHours = heatmapData.filter(d => d.zone === (zones[0] || "")).map(d => d.hour);
-  const hours = orderedHours.length === 24 ? orderedHours : Array.from({ length: 24 }, (_, i) => i);
+  const hours = Array.from({ length: 24 }, (_, i) => (currentHour + i) % 24);
 
   // Build heatmap grid
   const filteredZones = selectedZone === "all" ? zones : [selectedZone];

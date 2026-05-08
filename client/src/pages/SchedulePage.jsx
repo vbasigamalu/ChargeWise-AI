@@ -17,7 +17,8 @@ export default function SchedulePage() {
 
   const schedules = data?.schedules || [];
   const zoneData = schedules.find(s => s.zone === selectedZone) || schedules[0];
-  const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+  const currentHour = new Date().getHours();
+  const hours = Array.from({ length: 24 }, (_, i) => `${(currentHour + i) % 24}:00`);
 
   const loadCurveData = {
     labels: hours,
