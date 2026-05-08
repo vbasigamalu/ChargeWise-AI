@@ -1,7 +1,7 @@
 /**
  * Mock Data for EVOPT Hackathon Safety Net
  * Returns high-quality sample data if Python bridges fail in cloud environments.
- * Updated to match the exact requirements of all Dashboard, Demand, Schedule, and Station pages.
+ * Updated to match the exact requirements of all features including Simulation, Explainability, and Surge Alerts.
  */
 
 const ZONES = ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar", "MG Road", "Malleshwaram", "Rajajinagar", "Hebbal", "Electronic City", "Bannerghatta", "Basavanagudi"];
@@ -32,11 +32,50 @@ const mockData = {
   },
 
   get_surge_alerts: (args) => ({
-    summary: { total_alerts: 3, critical_count: 1 },
+    summary: { 
+      total_alerts: 4, 
+      emergency: 1, 
+      critical: 2, 
+      warning: 1,
+      highest_load_pct: 98
+    },
     alerts: [
-      { zone: "Koramangala", severity: "CRITICAL", message: "Transformer load exceeding 92%", transformer_max_kW: 1200, current_load_kW: 1105 },
-      { zone: "Indiranagar", severity: "WARNING", message: "Predicted surge in 45 mins", transformer_max_kW: 800, current_load_kW: 650 },
-      { zone: "HSR Layout", severity: "INFO", message: "Optimization sequence active", transformer_max_kW: 1000, current_load_kW: 420 }
+      { 
+        zone: "Koramangala", 
+        severity: "EMERGENCY", 
+        predicted_load_pct: 98, 
+        hour: 19,
+        recommended_action: "Initiate immediate peak-shifting and throttle Non-Essential chargers.",
+        predicted_demand_kWh: 1180,
+        transformer_max_kW: 1200
+      },
+      { 
+        zone: "Indiranagar", 
+        severity: "CRITICAL", 
+        predicted_load_pct: 89, 
+        hour: 18,
+        recommended_action: "Advise users to delay charging via app notification.",
+        predicted_demand_kWh: 712,
+        transformer_max_kW: 800
+      },
+      { 
+        zone: "MG Road", 
+        severity: "CRITICAL", 
+        predicted_load_pct: 86, 
+        hour: 20,
+        recommended_action: "Enable V2G discharge for parked fleet vehicles.",
+        predicted_demand_kWh: 860,
+        transformer_max_kW: 1000
+      },
+      { 
+        zone: "HSR Layout", 
+        severity: "WARNING", 
+        predicted_load_pct: 78, 
+        hour: 18,
+        recommended_action: "Monitor transformer temperature sensor status.",
+        predicted_demand_kWh: 780,
+        transformer_max_kW: 1000
+      }
     ]
   }),
 
@@ -84,14 +123,59 @@ const mockData = {
     };
   },
 
+  run_simulation: (args) => {
+    const evGrowth = args.ev_growth_pct || 30;
+    const adoption = args.scheduling_adoption_pct || 50;
+    
+    const scenarios = ZONES.slice(0, 8).map(z => {
+      const baselinePeak = 800 + Math.random() * 400;
+      const growthFactor = 1 + (evGrowth / 100);
+      const reductionFactor = 1 - ((adoption / 100) * 0.3); // Max 30% reduction from scheduling
+      const projectedPeak = baselinePeak * growthFactor * reductionFactor;
+      
+      return {
+        zone: z,
+        baseline: { daily_peak_kWh: Math.round(baselinePeak) },
+        projected: { daily_peak_kWh: Math.round(projectedPeak) },
+        impact: {
+          peak_change_pct: Math.round(((projectedPeak - baselinePeak) / baselinePeak) * 100),
+          at_risk: projectedPeak > 1200
+        }
+      };
+    });
+
+    return {
+      scenarios,
+      summary: {
+        overall_change_pct: Math.round(evGrowth - (adoption * 0.4)),
+        zones_at_risk: scenarios.filter(s => s.impact.at_risk).length,
+        total_scheduling_savings: 4500 + (adoption * 120)
+      }
+    };
+  },
+
+  explain_prediction: (args) => ({
+    zone: args.zone || "Koramangala",
+    hour: args.hour || 19,
+    prediction: 842,
+    base_value: 520,
+    explanation: `The prediction for ${args.zone} at ${args.hour}:00 is primarily driven by high Historical Occupancy and Local Event activity. Weather (Temperature) is providing a slight cooling effect on the total demand.`,
+    features: [
+      { name: "Historical Occupancy", shap_value: 0.421, contribution_pct: 45, direction: "increases" },
+      { name: "Local Events (Tech Park)", shap_value: 0.285, contribution_pct: 30, direction: "increases" },
+      { name: "Traffic Density", shap_value: 0.152, contribution_pct: 16, direction: "increases" },
+      { name: "Temperature (Celsius)", shap_value: 0.082, contribution_pct: 9, direction: "decreases" }
+    ]
+  }),
+
   recommend_stations: (args) => ({
     summary: { avg_score: 88, zones_covered: ZONES.length },
-    recommendations: ZONES.slice(0, 5).map((z, i) => ({
+    recommendations: ZONES.slice(0, 10).map((z, i) => ({
       rank: i + 1,
       zone: z,
       lat: 12.9 + Math.random() * 0.1,
       lng: 77.5 + Math.random() * 0.1,
-      score: 95 - i * 3,
+      score: 95 - i * 2,
       ev_density_score: "High",
       coverage_gap_score: "Significant",
       nearest_station_km: (1.2 + Math.random() * 2).toFixed(1)
