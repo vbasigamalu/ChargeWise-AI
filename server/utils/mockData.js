@@ -12,7 +12,7 @@ const mockData = {
         data.push({
           zone,
           hour: h,
-          predicted_demand_kW: 200 + Math.random() * 800,
+          intensity: 20 + Math.random() * 80,
           occupancy_pct: 30 + Math.random() * 60
         });
       }
@@ -29,14 +29,26 @@ const mockData = {
     ]
   }),
 
-  validate_grid_constraints: (args) => ({
-    status: "HEALTHY",
-    summary: { total_capacity_kW: 50000, current_utilization_pct: 68, critical_zones: 0 },
-    zone_status: [
-      { zone: "Indiranagar", status: "HEALTHY", utilization: 62 },
-      { zone: "Koramangala", status: "STRESSED", utilization: 88 }
-    ]
-  }),
+  validate_grid_constraints: (args) => {
+    const zones = ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar", "MG Road"];
+    const grid_status = zones.map(z => ({
+      zone: z,
+      transformer_max_kW: 1000 + Math.floor(Math.random() * 500),
+      current_load_kW: 600 + Math.floor(Math.random() * 400),
+      utilization_pct: 60 + Math.floor(Math.random() * 35),
+      headroom_kW: 100 + Math.floor(Math.random() * 200),
+      status: Math.random() > 0.8 ? "CRITICAL" : Math.random() > 0.5 ? "STRESSED" : "HEALTHY"
+    }));
+    return {
+      grid_status,
+      summary: {
+        total_zones: zones.length,
+        critical_zones: grid_status.filter(g => g.status === "CRITICAL").length,
+        warning_zones: grid_status.filter(g => g.status === "STRESSED").length,
+        healthy_zones: grid_status.filter(g => g.status === "HEALTHY").length
+      }
+    };
+  },
 
   smart_schedule: (args) => {
     const hours = Array.from({ length: 24 }, (_, i) => i);
