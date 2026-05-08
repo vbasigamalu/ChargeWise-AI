@@ -16,7 +16,7 @@ export default function DemandPage() {
   if (loading) return <div className="loading-container"><div className="loading-spinner" /><p>Predicting demand...</p></div>;
 
   const heatmapData = data?.heatmap_data || [];
-  const currentHour = data?.current_hour;
+  const currentHour = new Date().getHours();
   const zones = [...new Set(heatmapData.map(d => d.zone))];
   
   // Dynamic hours: Extract order from the first zone's data

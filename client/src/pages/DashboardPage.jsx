@@ -43,7 +43,7 @@ export default function DashboardPage() {
 
   // Build demand by zone chart
   const heatmapData = heatmap?.heatmap_data || [];
-  const currentHour = heatmap?.current_hour;
+  const currentHour = new Date().getHours();
   const zones = [...new Set(heatmapData.map(d => d.zone))];
   
   // Dynamic hours: Extract order from the first zone's data
