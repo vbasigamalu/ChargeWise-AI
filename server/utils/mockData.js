@@ -5,7 +5,7 @@
 
 const mockData = {
   predict_demand: (args) => {
-    const zones = ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar", "MG Road"];
+    const zones = ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar", "MG Road", "Malleshwaram", "Rajajinagar", "Hebbal", "Electronic City", "Bannerghatta", "Basavanagudi"];
     const data = [];
     for (const zone of zones) {
       for (let h = 0; h < 24; h++) {
@@ -30,7 +30,7 @@ const mockData = {
   }),
 
   validate_grid_constraints: (args) => {
-    const zones = ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar", "MG Road"];
+    const zones = ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar", "MG Road", "Malleshwaram", "Rajajinagar", "Hebbal", "Electronic City", "Bannerghatta", "Basavanagudi"];
     const grid_status = zones.map(z => ({
       zone: z,
       transformer_max_kW: 1000 + Math.floor(Math.random() * 500),

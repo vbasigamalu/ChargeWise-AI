@@ -58,7 +58,7 @@ export default function DashboardPage() {
 
   const lineData = {
     labels: hours.map(h => h === currentHour ? `NOW (${h}:00)` : `${h}:00`),
-    datasets: zones.slice(0, 6).map((z, i) => ({
+    datasets: zones.map((z, i) => ({
       label: z,
       data: hours.map(h => demandByHour[z]?.[h] || 0),
       borderColor: CHART_COLORS[i],
