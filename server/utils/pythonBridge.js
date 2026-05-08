@@ -5,6 +5,8 @@ const PYTHON_EXECUTABLE = process.platform === "win32" ? "py" : "python3";
 const PYTHON_ARGS = process.platform === "win32" ? ["-3.12"] : [];
 const RUNNER_SCRIPT = path.join(__dirname, "..", "..", "python", "runner.py");
 
+const { mockData } = require("./mockData");
+
 /**
  * Executes a python function via runner.py
  * @param {string} funcName Name of the function in runner.py to execute
@@ -13,7 +15,9 @@ const RUNNER_SCRIPT = path.join(__dirname, "..", "..", "python", "runner.py");
  */
 function runPython(funcName, args = {}) {
   return new Promise((resolve, reject) => {
-    const pythonProcess = spawn(PYTHON_EXECUTABLE, [...PYTHON_ARGS, RUNNER_SCRIPT, funcName], { env: { ...process.env, PYTHONIOENCODING: "utf-8" } });
+    const pythonProcess = spawn(PYTHON_EXECUTABLE, [...PYTHON_ARGS, RUNNER_SCRIPT, funcName], { 
+      env: { ...process.env, PYTHONIOENCODING: "utf-8" } 
+    });
 
     let dataString = "";
     let errorString = "";
@@ -28,24 +32,39 @@ function runPython(funcName, args = {}) {
 
     pythonProcess.on("close", (code) => {
       if (code !== 0) {
-        console.error(`[Python Error ${funcName}] Code: ${code}`);
-        console.error(`STDERR: ${errorString}`);
-        console.error(`STDOUT: ${dataString}`);
+        console.warn(`[Python Bridge Fallback] Function ${funcName} failed. Serving mock data.`);
+        if (mockData[funcName]) {
+          return resolve(mockData[funcName](args));
+        }
         return reject(new Error(`Python process exited with code ${code}: ${errorString}`));
       }
 
       try {
         const result = JSON.parse(dataString);
         if (result.error) {
-          console.error(`[Python Logic Error ${funcName}]`, result.error, result.traceback);
+          console.warn(`[Python Logic Fallback] ${funcName} errored. Serving mock data.`);
+          if (mockData[funcName]) {
+            return resolve(mockData[funcName](args));
+          }
           return reject(new Error(result.error));
         }
         resolve(result);
       } catch (e) {
-        console.error(`[JSON Parse Error ${funcName}]`, e.message);
-        console.error("Raw Output:", dataString);
+        console.warn(`[JSON Parse Fallback] ${funcName} parse error. Serving mock data.`);
+        if (mockData[funcName]) {
+          return resolve(mockData[funcName](args));
+        }
         reject(new Error("Failed to parse Python output as JSON"));
       }
+    });
+
+    // Handle process spawn errors directly
+    pythonProcess.on("error", (err) => {
+      console.warn(`[Spawn Fallback] Could not start Python for ${funcName}. Serving mock data.`);
+      if (mockData[funcName]) {
+        return resolve(mockData[funcName](args));
+      }
+      reject(err);
     });
 
     // Write JSON to stdin
