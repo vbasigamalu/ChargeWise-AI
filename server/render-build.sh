@@ -10,8 +10,9 @@ echo "--- Installing Node Dependencies ---"
 npm install
 
 echo "--- Installing Python Dependencies ---"
-# Ensure pip is up to date
-python3 -m pip install --upgrade pip
+# Ensure pip, setuptools, and wheel are up to date
+python3 -m pip install --upgrade pip setuptools wheel
+
 # Install requirements from the python directory
 python3 -m pip install -r ../python/requirements.txt
 
